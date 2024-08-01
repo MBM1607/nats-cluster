@@ -1,0 +1,33 @@
+version: "3.5"
+services:
+  nats:
+    image: nats
+    ports:
+      - "8222:8222"
+      - "6222:6222"
+      - "2222:2222"
+    command: "-c /nats-server-seed.conf"
+    networks: ["nats"]
+    volumes:
+      - ./nats-server-seed.conf:/nats-server-seed.conf
+    env_file: ".env"
+  nats-1:
+    image: nats
+    command: "-config /nats-server-leaf.conf"
+    networks: ["nats"]
+    depends_on: ["nats"]
+    volumes:
+      - ./nats-server-leaf.conf:/nats-server-leaf.conf
+    env_file: ".env"
+  nats-2:
+    image: nats
+    command: "-config /nats-server-leaf.conf"
+    networks: ["nats"]
+    depends_on: ["nats"]
+    volumes:
+      - ./nats-server-leaf.conf:/nats-server-leaf.conf
+    env_file: ".env"
+
+networks:
+  nats:
+    name: nats

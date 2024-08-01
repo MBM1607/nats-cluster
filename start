@@ -1,0 +1,22 @@
+#!/bin/bash
+
+GREEN='\033[0;32m'
+INPUT_COLOR='\033[0;35m'
+NC='\033[0m'
+
+# Check if .env file exists
+if [ ! -f .env ]; then
+  cp .env.template .env
+  echo -e "${GREEN}.env file created${NC}"
+  echo "Please enter the NATS credentials"
+  echo -n -e "${INPUT_COLOR}Username: ${NC}"
+  read -r NATS_USER
+  echo -n -e "${INPUT_COLOR}Password: ${NC}"
+  read -r NATS_PASSWORD
+  sed -i "s/NATS_USER=.*/NATS_USER=$NATS_USER/" .env
+  sed -i "s/NATS_PASSWORD=.*/NATS_PASSWORD=$NATS_PASSWORD/" .env
+  echo ".env file created"
+fi
+
+# Start NATS cluster
+docker-compose -f nats-cluster.yaml up -d
