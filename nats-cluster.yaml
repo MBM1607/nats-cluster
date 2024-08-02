@@ -5,6 +5,7 @@ services:
     ports:
       - "8222:8222"
       - "6222:6222"
+      - "4222:4222"
       - "2222:2222"
     command: "-c /nats-server-seed.conf"
     networks: ["nats"]
